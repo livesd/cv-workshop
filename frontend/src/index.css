@@ -24,7 +24,7 @@ html {
 body {
   margin: 0;
   background: #ffffff;
-  color: #333;
+  color: #334350;
 }
 
 .app {
@@ -43,6 +43,7 @@ main {
 h1, h2, h3, h4, h5, h6 {
   color: #2563eb;
   margin-bottom: 1rem;
+  width: 100%;
 }
 
 .loading {
