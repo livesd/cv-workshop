@@ -13,18 +13,23 @@ public class CvService(AppDbContext context) : ICvService
     }
 
     // TODO: Oppgave 1
+    public async Task<User?>GetUserByIdAsync(Guid id)
+    {
+        return await context.Users.FindAsync(id);
+    }
 
     public async Task<IEnumerable<Experience>> GetAllExperiencesAsync()
     {
         // TODO: Oppgave 2
-        return [];
+
+        return await context.Experiences.OrderByDescending(e => e.StartDate).ToListAsync();
     }
 
     public async Task<Experience?> GetExperienceByIdAsync(Guid id)
     {
         // TODO: Oppgave 2
 
-        return null;
+        return await context.Experiences.FindAsync(id);
     }
 
     public async Task<IEnumerable<Experience>> GetExperiencesByTypeAsync(string type)
