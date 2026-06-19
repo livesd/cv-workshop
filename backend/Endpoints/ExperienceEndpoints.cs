@@ -45,22 +45,16 @@ public static class ExperienceEndpoints
                 "/experiences/type/{type}",
                 async (string type, ICvService cvService) =>
                 {
-                }
-            )
-            .WithName("GetExperienceById")
-            .WithTags("Experiences");
-
-        // GET /experiences/type/{type}
-        app.MapGet(
-                "/experiences/type/{type}",
-                async (string type, ICvService cvService) =>
-                {
                     // TODO: Oppgave 3
+                    var experiences = await cvService.GetExperiencesByTypeAsync(type);
+                    var experienceDtos = experiences.Select(e => e.ToDto()).ToList();
 
-                    return Results.Ok();
+                    return Results.Ok(experienceDtos);
                 }
             )
-            .WithName("GetExperiencesByType")
+            .WithName("GetExperienceByType")
             .WithTags("Experiences");
+
+    
     }
 }

@@ -1,7 +1,6 @@
 ﻿using backend.Data.Mappers;
 using backend.Data.Requests;
 using backend.Services;
-using Microsoft.AspNetCore.Mvc;
 
 namespace backend.Endpoints;
 
@@ -24,30 +23,30 @@ public static class UserEndpoints
             .WithTags("Users");
 
         // GET /users/{id}
-        // TODO: Oppgave 1: skriv et endepunkt for å hente ut riktig bruker
         app.MapGet(
-            "/users/{id}",
-            async (Guid id, CvService cvService) =>
-            {
-                var user = await cvService.GetUserByIdAsync(id);
-                if (user == null)
+                "/users/{id:guid}",
+                async (Guid id, ICvService svc) =>
                 {
-                    return Results.NotFound("Denne brukeren finnes ikke... Enda:)");
-                }
+                    var user = await svc.GetUserByIdAsync(id);
+                    if (user is null)
+                        return Results.NotFound($"Klarte ikke å finne bruker med id {id}");
 
-                return Results.Ok(user.ToDto());
-            }
-        )
-        .WithName("GetUserById")
-        .WithTags("Users");
+                    var userDto = user.ToDto();
+                    return Results.Ok(userDto);
+                }
+            )
+            .WithName("GetUserById")
+            .WithTags("Users");
 
         // Retrieve all cvs that include any of the wanted skills
         app.MapPost(
                 "/users/skills",
-                async () =>
+                async (SkillRequest skillRequest, ICvService cvService) =>
                 {
-                    // TODO: Oppgave 4
-                    return Results.Ok();
+                    var users = await cvService.GetUsersWithDesiredSkills(
+                        skillRequest.WantedSkills
+                    );
+                    return Results.Ok(users.Select(u => u.ToDto()).ToList());
                 }
             )
             .WithName("GetUsersWithDesiredSkill")

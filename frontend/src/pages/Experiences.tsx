@@ -3,6 +3,7 @@ import styles from "./Experiences.module.css";
 import { CxOption, CxSelect } from "@computas/designsystem/select/react";
 import { experienceTypeMap } from "../types/experienceTypes";
 import { useExperiences } from "../hooks/useExperiences";
+import { ExperienceCard } from "../components/experiences/ExperienceCard";
 
 export default function Experiences() {
   const [selectedExperienceType, setSelectedExperienceType] = useState<
@@ -10,7 +11,15 @@ export default function Experiences() {
   >(null);
 
   // TODO Oppgave 1.1 of 1.2: Håndter loading og error av erfaringer
-  const { data: experiences } = useExperiences();
+  const { data: experiences, isLoading, error } = useExperiences();
+
+  if (isLoading) {
+    return <div className={styles.loading}>Loading experiences...</div>;
+  }
+
+  if (error) {
+    return <div className={styles.error}>Experiences could not load.</div>;
+  }
 
   if (!experiences || experiences.length === 0) {
     return <div className={styles.noExperiences}>No experiences found.</div>;
@@ -60,6 +69,15 @@ export default function Experiences() {
       </div>
       <div className={styles.experiences}>
         {/*TODO Oppgave 3.1, 3.2, 4.1: Vis og sorter alle erfaringene. */}
+        {
+          experiences
+            .sort(
+              (a, b) => 
+                new Date(b.startDate).getTime() - new Date(a.startDate).getTime())
+              .map((experience) => (
+            <ExperienceCard key={experience.id} experience={experience} />
+          ))
+        }
       </div>
     </div>
   );

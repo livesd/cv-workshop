@@ -6,10 +6,8 @@ public interface ICvService
 {
     // Users
     Task<IEnumerable<User>> GetAllUsersAsync();
-
-    // TODO: Oppgave 1: ny metode for å hente User basert på id
-
-    // TODO: Oppgave 4: ny metode - GetUsersWithDesiredSkills
+    Task<User?> GetUserByIdAsync(Guid id);
+    Task<IEnumerable<User>> GetUsersWithDesiredSkills(IEnumerable<string> skills);
 
     // Experiences
     Task<IEnumerable<Experience>> GetAllExperiencesAsync();

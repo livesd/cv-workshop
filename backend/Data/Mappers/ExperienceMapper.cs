@@ -8,11 +8,14 @@ public static class ExperienceMapper
     public static ExperienceDto ToDto(this Experience experience) =>
         new(
             Id: experience.Id,
+            UserId: experience.UserId,
             Title: experience.Title,
+            Role: experience.Role,
             Type: experience.Type,
-            Description: experience.Description,
             StartDate: experience.StartDate,
-            EndDate: experience.EndDate
+            EndDate: experience.EndDate,
+            Description: experience.Description,
+            ImageUrl: experience.ImageUrl,
+            Company: experience.Company
         );
-    
 }
